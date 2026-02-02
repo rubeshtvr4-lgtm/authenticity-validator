@@ -181,31 +181,30 @@ h1#welcomeMessage {
     margin-bottom: 20px;
 }
 
-/* --- UPDATED INPUT STYLE --- */
-/* --- UPDATED INPUT STYLE --- */
+/* --- UPDATED INPUT STYLE (Fixes Typing Issue) --- */
 input, textarea {
     width: 100%;
     padding: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+    margin-bottom: 5px; /* Spacing */
+    border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 5px;
-    background: #ffffff !important; /* Force white background */
-    color: #000000 !important;      /* Force BLACK text */
+    
+    /* FORCE White Background & Black Text */
+    background: #ffffff !important; 
+    color: #000000 !important;      
+    
+    /* FORCE Input to sit on top of the glass effect */
+    position: relative !important;
+    z-index: 999 !important;
+    
     outline: none;
     font-size: 14px;
-    position: relative; /* Fixes overlap issues */
-    z-index: 10;        /* Ensures it is clickable */
 }
 
-/* Glow when you click inside */
+/* Glow when active */
 input:focus, textarea:focus {
-    border: 2px solid #00e5ff !important; /* Cyan glow */
-    box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
-}
-
-/* Glow when you click inside */
-input:focus, textarea:focus {
-    border: 2px solid #00e5ff !important; /* Cyan glow */
-    box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+    border: 2px solid #00e5ff !important;
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
 }
 
 /* --- 9. BUTTONS --- */
