@@ -1,108 +1,40 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document Verification</title>
-    <link rel="stylesheet" href="/style.css">
+    <title>Verify Document - Authenticity Validator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+
+    <nav class="navbar">
+        <div class="logo">Authenticity Validator</div>
+        <a href="home.html" class="btn-logout" style="background: transparent; border: 1px solid white;">Back to Home</a>
+    </nav>
+
     <div class="container">
-        <h2>Verification Status</h2>
-        <div id="loader">Checking database...</div>
-        <div id="result" style="display:none;">
-            <h3 id="statusText"></h3>
-            <p id="docName" style="color:#666;"></p>
-            <p id="timestamp" style="font-size:0.8rem;"></p>
+        <div class="dashboard-box">
+            <h2>🔍 Verify Authenticity</h2>
+            <p>Enter the unique Document ID to verify its validity.</p>
+            
+            <form id="verifyForm" style="margin-top: 20px;">
+                <div class="input-group">
+                    <input type="text" id="docIdInput" placeholder="Enter Document ID (e.g. 65c1...)" required style="color: black;">
+                </div>
+                <button type="submit" class="btn">Check Now</button>
+            </form>
+
+            <div id="verifyResult" style="margin-top: 20px; display: none; text-align: left; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px;">
+                <h3 style="color: #00e5ff; margin-bottom: 10px;">Verification Result:</h3>
+                <p><strong>Status:</strong> <span id="statusText"></span></p>
+                <p><strong>File Name:</strong> <span id="fileName"></span></p>
+                <p><strong>Uploaded On:</strong> <span id="uploadDate"></span></p>
+            </div>
         </div>
-        <a href="/dashboard.html?section=upload" style="display:inline-block; margin-top:20px; text-decoration:none; background:#4facfe; color:white; padding:10px 20px; border-radius:5px;">
-    Upload New File
-</a>
     </div>
 
-    <script>
-        // 1. Get the document name from the URL (?doc=filename)
-        const params = new URLSearchParams(window.location.search);
-        const docName = params.get('doc');
-
-        if (!docName) {
-            document.getElementById('loader').innerText = "No document specified.";
-        } else {
-            // 2. Ask the server if it's valid
-            fetch(`/api/verify/validate?doc=${docName}`)
-                .then(res => res.json())
-                .then(data => {
-                    document.getElementById('loader').style.display = 'none';
-                    document.getElementById('result').style.display = 'block';
-                    
-                    const status = document.getElementById('statusText');
-                    status.innerText = data.message;
-                    status.className = data.valid ? 'success' : 'error';
-                    
-                    document.getElementById('docName').innerText = "File: " + docName;
-                    if(data.timestamp) {
-                        document.getElementById('timestamp').innerText = "Verified on: " + data.timestamp;
-                    }
-                })
-                .catch(err => {
-                    document.getElementById('loader').innerText = "Verification Failed.";
-                });
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
-=======
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document Verification</title>
-    <link rel="stylesheet" href="/style.css">
-</head>
-<body>
-    <div class="container">
-        <h2>Verification Status</h2>
-        <div id="loader">Checking database...</div>
-        <div id="result" style="display:none;">
-            <h3 id="statusText"></h3>
-            <p id="docName" style="color:#666;"></p>
-            <p id="timestamp" style="font-size:0.8rem;"></p>
-        </div>
-        <a href="/dashboard.html?section=upload" style="display:inline-block; margin-top:20px; text-decoration:none; background:#4facfe; color:white; padding:10px 20px; border-radius:5px;">
-    Upload New File
-</a>
-    </div>
-
-    <script>
-        // 1. Get the document name from the URL (?doc=filename)
-        const params = new URLSearchParams(window.location.search);
-        const docName = params.get('doc');
-
-        if (!docName) {
-            document.getElementById('loader').innerText = "No document specified.";
-        } else {
-            // 2. Ask the server if it's valid
-            fetch(`/api/verify/validate?doc=${docName}`)
-                .then(res => res.json())
-                .then(data => {
-                    document.getElementById('loader').style.display = 'none';
-                    document.getElementById('result').style.display = 'block';
-                    
-                    const status = document.getElementById('statusText');
-                    status.innerText = data.message;
-                    status.className = data.valid ? 'success' : 'error';
-                    
-                    document.getElementById('docName').innerText = "File: " + docName;
-                    if(data.timestamp) {
-                        document.getElementById('timestamp').innerText = "Verified on: " + data.timestamp;
-                    }
-                })
-                .catch(err => {
-                    document.getElementById('loader').innerText = "Verification Failed.";
-                });
-        }
-    </script>
-</body>
->>>>>>> 04e92bd834593c8fa4360410d354b0903e4d7c24
 </html>

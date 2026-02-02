@@ -67,3 +67,50 @@ if (signupForm) {
         }
     });
 }
+// --- VERIFY LOGIC ---
+const verifyForm = document.getElementById('verifyForm');
+if (verifyForm) {
+    verifyForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const docId = document.getElementById('docIdInput').value.trim();
+        const resultDiv = document.getElementById('verifyResult');
+        const statusText = document.getElementById('statusText');
+        const fileName = document.getElementById('fileName');
+        const uploadDate = document.getElementById('uploadDate');
+
+        if (!docId) return alert("Please enter a Document ID");
+
+        try {
+            // Show loading state
+            resultDiv.style.display = "block";
+            statusText.innerText = "Checking database...";
+            statusText.style.color = "yellow";
+            fileName.innerText = "---";
+            uploadDate.innerText = "---";
+
+            // Send request to server
+            // We assume the route is /api/verify/:id
+            const res = await fetch(`/api/verify/${docId}`);
+            const data = await res.json();
+
+            if (res.ok) {
+                // Document Found!
+                statusText.innerText = "✅ Authentic & Verified";
+                statusText.style.color = "#00ff00"; // Green
+                fileName.innerText = data.filename || "Unknown File";
+                uploadDate.innerText = new Date(data.uploadDate).toLocaleString();
+            } else {
+                // Document Not Found or Fake
+                statusText.innerText = "❌ Invalid / Not Found";
+                statusText.style.color = "red";
+                fileName.innerText = "N/A";
+                uploadDate.innerText = "N/A";
+            }
+        } catch (err) {
+            console.error(err);
+            statusText.innerText = "❌ Server Error";
+            statusText.style.color = "red";
+        }
+    });
+}
