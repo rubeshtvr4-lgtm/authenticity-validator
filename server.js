@@ -28,7 +28,9 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/verify', verifyRoutes); 
 
 // --- FIX: Send 'index.html' when opening the site ---
-app.get('*', (req, res) => {
+// --- FIX: Send 'index.html' when opening the site ---
+// We use /(.*)/ instead of '*' to fix the new Express update error
+app.get(/(.*)/, (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
