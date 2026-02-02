@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -376,4 +377,384 @@
         }
     </script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Authenticity Validator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- GLOBAL STYLES --- */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: url('/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            color: white;
+        }
+
+        /* --- 1. MENU TOGGLE (Hamburger Icon) --- */
+        .menu-toggle-btn {
+            position: fixed; top: 25px; left: 25px; z-index: 100;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            font-size: 1.5rem; padding: 10px 16px; border-radius: 8px; cursor: pointer;
+            transition: 0.3s;
+        }
+        .menu-toggle-btn:hover { background: rgba(255, 255, 255, 0.3); }
+
+        /* --- 2. SLIDING SIDEBAR --- */
+        .sidebar {
+            position: fixed; top: 0; left: -320px;
+            width: 280px; height: 100vh;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px 20px;
+            display: flex; flex-direction: column; gap: 15px;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+            z-index: 200; transition: left 0.4s ease-in-out;
+        }
+        .sidebar.active { left: 0; }
+
+        .sidebar-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .sidebar-title { font-size: 1.2rem; margin: 0; text-transform: uppercase; letter-spacing: 1px; color: #fff; }
+        .close-btn { background: transparent; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+
+        /* Nav Buttons */
+        .nav-btn {
+            background: transparent; color: rgba(255,255,255,0.8);
+            border: none; text-align: left; padding: 15px; border-radius: 10px;
+            cursor: pointer; font-size: 1rem; display: flex; align-items: center; gap: 15px;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover, .nav-btn.active {
+            background: rgba(255, 255, 255, 0.15); color: #fff;
+            transform: translateX(5px); box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .nav-btn i { width: 25px; text-align: center; }
+
+        /* --- 3. MAIN CONTENT --- */
+        .main-content {
+            width: 100%; height: 100vh;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            position: relative;
+        }
+
+        .project-header { text-align: center; margin-bottom: 30px; animation: fadeInDown 1s ease; }
+        .project-header h1 {
+            font-size: 3rem; margin: 0;
+            background: linear-gradient(to right, #fff, #a1c4fd);
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .project-header p { font-size: 1rem; color: rgba(255,255,255,0.7); }
+
+        /* --- GLASS PANELS --- */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 40px; border-radius: 20px;
+            width: 500px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: none; /* Hidden by default */
+            animation: fadeInUp 0.5s ease;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
+
+        /* --- 4. HOME TEXT STYLE --- */
+        .home-text {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: justify;
+            line-height: 1.8;
+            margin-top: 20px;
+        }
+
+        /* --- 5. LOGOUT BUTTON (Hidden initially if not home) --- */
+        .logout-container { 
+            position: absolute; top: 25px; right: 30px; z-index: 10; 
+            display: block; /* Default block, controlled by JS */
+        }
+        .btn-logout {
+            background: rgba(220, 53, 69, 0.8); color: white; border: none;
+            padding: 10px 25px; border-radius: 30px; cursor: pointer; font-weight: bold;
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+            transition: 0.3s;
+        }
+        .btn-logout:hover { background: #c82333; transform: scale(1.05); }
+
+        /* Overlay */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 150; display: none; }
+        .overlay.active { display: block; }
+        
+        /* Utility */
+        input[type="file"] { width: 100%; margin: 15px 0; color: #fff; }
+        .action-btn {
+            width: 100%; padding: 12px;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; font-size: 1rem;
+        }
+        .action-btn:hover { box-shadow: 0 0 15px rgba(0, 242, 254, 0.5); }
+
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <button class="menu-toggle-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3 class="sidebar-title">Menu</h3>
+            <button class="close-btn" onclick="toggleSidebar()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <button class="nav-btn active" onclick="showSection('homeSection')">
+            <i class="fa-solid fa-house" style="color:#fff;"></i> Home
+        </button>
+
+        <button class="nav-btn" onclick="showSection('uploadSection')">
+            <i class="fa-solid fa-cloud-arrow-up" style="color:#4facfe;"></i> Upload
+        </button>
+        
+        <button class="nav-btn" onclick="showSection('plagSection')">
+            <i class="fa-solid fa-file-shield" style="color:#ff9a9e;"></i> Plagiarism Check
+        </button>
+        
+        <button class="nav-btn" onclick="showSection('qrSection')">
+            <i class="fa-solid fa-qrcode" style="color:#a18cd1;"></i> QR Code
+        </button>
+
+        <button class="nav-btn" onclick="window.location.href='/verify.html'">
+            <i class="fa-solid fa-magnifying-glass" style="color:#00f2fe;"></i> Verify Page
+        </button>
+    </nav>
+
+    <div class="logout-container" id="logoutContainer">
+        <button class="btn-logout" onclick="logout()">
+            <i class="fa-solid fa-power-off"></i> Logout
+        </button>
+    </div>
+
+    <main class="main-content">
+        <div class="project-header">
+            <h1>Authenticity Validator</h1>
+            <p>Secure Document Verification System</p>
+        </div>
+
+        <div id="homeSection" class="glass-panel" style="display:block;">
+            <h3 style="margin-top:0; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:10px;">About Project</h3>
+            <p class="home-text">
+                Authenticity validation in academia is the critical process of verifying the originality of research and the legitimacy of educational credentials to ensure integrity, credibility, and trust. It involves using technologies like AI-driven plagiarism detection, OCR, and blockchain to prevent fraud, detect AI-generated content, and confirm that academic records are genuine.
+            </p>
+        </div>
+
+        <div id="uploadSection" class="glass-panel">
+            <h3 style="margin-top:0;">Upload Certificate</h3>
+            <p style="font-size:0.9rem; color:#ccc;">Select a text or PDF file to analyze.</p>
+            <form id="uploadForm">
+                <input type="file" id="fileInput" accept=".txt, .pdf" required>
+                <button type="submit" class="action-btn">Upload & Check</button>
+            </form>
+            <div id="uploadResult" style="margin-top:15px; display:none; padding:10px; background:rgba(255,255,255,0.1); border-radius:5px;"></div>
+        </div>
+
+        <div id="plagSection" class="glass-panel">
+            <h3 style="margin-top:0;">Plagiarism Checker</h3>
+            <div id="plagDisplay" style="text-align:center;">
+                <p style="color:#ccc;">Upload a file via the Upload tab first.</p>
+                <h2 id="scoreBig" style="font-size:3.5rem; margin:10px 0;">--%</h2>
+                <p id="verdictText" style="font-weight:bold; font-size:1.2rem;"></p>
+            </div>
+        </div>
+
+        <div id="qrSection" class="glass-panel" style="text-align:center;">
+            <h3 style="margin-top:0;">QR Verification</h3>
+            <div id="qrArea">
+                <p id="qrMsg" style="color:#ccc;">Generate a code for the last uploaded file.</p>
+                <div id="qrImgBox" style="margin:20px 0; min-height:150px; display:flex; align-items:center; justify-content:center;">
+                    <span style="color:rgba(255,255,255,0.3); font-size:0.8rem;">(QR Code will appear here)</span>
+                </div>
+                <button id="genQrBtn" class="action-btn" style="width:200px; margin:0 auto; display:none;">Generate QR</button>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        const token = localStorage.getItem('token');
+        if (!token) window.location.href = '/';
+
+        let currentFile = "";
+
+        // --- SIDEBAR TOGGLE ---
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        // --- SECTION NAVIGATION ---
+        function showSection(id) {
+            // 1. Hide all panels
+            document.querySelectorAll('.glass-panel').forEach(el => el.style.display = 'none');
+            
+            // 2. Show selected panel
+            document.getElementById(id).style.display = 'block';
+            
+            // 3. Highlight active sidebar button
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Map IDs to Icons to find the right button
+            const iconMap = {
+                'homeSection': 'fa-house',
+                'uploadSection': 'fa-cloud-arrow-up',
+                'plagSection': 'fa-file-shield',
+                'qrSection': 'fa-qrcode'
+            };
+            
+            const btns = document.querySelectorAll('.nav-btn');
+            btns.forEach(btn => {
+                if(btn.innerHTML.includes(iconMap[id])) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // 4. LOGOUT VISIBILITY LOGIC (Only Show on Home)
+            const logoutDiv = document.getElementById('logoutContainer');
+            if(id === 'homeSection') {
+                logoutDiv.style.display = 'block';
+            } else {
+                logoutDiv.style.display = 'none';
+            }
+
+            // Close sidebar on mobile
+            // Check if sidebar is currently open before trying to close/toggle
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar.classList.contains('active')) {
+                 toggleSidebar();
+            }
+        }
+
+        // --- AUTO-OPEN UPLOAD SECTION (If redirected from Verify) ---
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const section = params.get('section');
+            
+            if (section === 'upload') {
+                showSection('uploadSection');
+                // Clean URL
+                window.history.replaceState({}, document.title, "/dashboard.html");
+            }
+        };
+
+        // --- UPLOAD LOGIC ---
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const input = document.getElementById('fileInput');
+            const btn = e.target.querySelector('button');
+            
+            if(!input.files[0]) return;
+            const originalText = btn.innerText;
+            btn.innerText = "Processing...";
+            
+            const formData = new FormData();
+            formData.append('file', input.files[0]);
+
+            try {
+                const res = await fetch('/api/upload', {
+                    method: 'POST',
+                    headers: { 'Authorization': token },
+                    body: formData
+                });
+                const data = await res.json();
+                
+                if(res.ok) {
+                    currentFile = data.filename;
+                    
+                    const resBox = document.getElementById('uploadResult');
+                    resBox.style.display = 'block';
+                    resBox.innerHTML = `✅ <b>Success!</b> File saved as <br> <i style="font-size:0.8rem">${data.filename}</i>`;
+                    
+                    document.getElementById('scoreBig').innerText = data.plagiarismScore + "%";
+                    const verdict = document.getElementById('verdictText');
+                    if(data.plagiarismScore > 30) {
+                        verdict.innerText = "⚠️ High Risk Detected";
+                        verdict.style.color = "#ff6b6b";
+                    } else {
+                        verdict.innerText = "✅ Unique Content";
+                        verdict.style.color = "#00e676";
+                    }
+                    
+                    document.getElementById('genQrBtn').style.display = 'block';
+                    document.getElementById('qrMsg').innerText = "File ready: " + data.filename;
+
+                    btn.innerText = "Done";
+                    setTimeout(() => btn.innerText = originalText, 2000);
+                } else {
+                    alert("Upload Failed: " + data.message);
+                    btn.innerText = originalText;
+                }
+            } catch(err) {
+                console.error(err);
+                alert("Server Error");
+                btn.innerText = originalText;
+            }
+        });
+
+        // --- QR LOGIC ---
+        document.getElementById('genQrBtn').addEventListener('click', async () => {
+            if(!currentFile) return;
+            
+            const btn = document.getElementById('genQrBtn');
+            btn.innerText = "Generating...";
+            
+            try {
+                const res = await fetch('/api/verify/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename: currentFile })
+                });
+                const data = await res.json();
+                
+                const img = document.createElement('img');
+                img.src = data.qrImage;
+                img.style.width = "150px";
+                img.style.border = "5px solid white";
+                img.style.borderRadius = "10px";
+                
+                const box = document.getElementById('qrImgBox');
+                box.innerHTML = "";
+                box.appendChild(img);
+                
+                btn.innerText = "Regenerate";
+            } catch(err) {
+                alert("Error generating QR");
+                btn.innerText = "Generate QR";
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = '/';
+        }
+    </script>
+</body>
+>>>>>>> 04e92bd834593c8fa4360410d354b0903e4d7c24
 </html>

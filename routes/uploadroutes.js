@@ -5,16 +5,15 @@ const fs = require('fs');
 const path = require('path');
 const pdfParse = require('pdf-parse'); 
 
-// --- FIX 1: Ensure 'uploads' folder exists ---
+// Ensure 'uploads' folder exists
 const uploadDir = './uploads';
 if (!fs.existsSync(uploadDir)){
     fs.mkdirSync(uploadDir);
-    console.log("Created 'uploads' folder.");
 }
 
 // Configure Storage
 const storage = multer.diskStorage({
-    destination: uploadDir, // Use the variable
+    destination: uploadDir,
     filename: function(req, file, cb) {
         cb(null, 'doc-' + Date.now() + path.extname(file.originalname));
     }
@@ -28,14 +27,21 @@ const upload = multer({
     }
 }).single('file');
 
+// --- FIXED SECURITY CHECK ---
 function checkFileType(file, cb){
-    const filetypes = /txt|pdf/;
-    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = filetypes.test(file.mimetype);
+    // 1. Check Extension (Allow .txt or .pdf)
+    const allowedExts = /txt|pdf/;
+    const extname = allowedExts.test(path.extname(file.originalname).toLowerCase());
+
+    // 2. Check Mime Type (Allow text/plain, application/pdf, etc.)
+    // We added 'text' and 'plain' so it accepts standard text files
+    const allowedMimes = /txt|pdf|text|plain/; 
+    const mimetype = allowedMimes.test(file.mimetype);
 
     if(mimetype && extname){
         return cb(null,true);
     } else {
+        console.log("Rejected File:", file.originalname, "Mime:", file.mimetype); // Log for debugging
         cb('Error: Only .txt and .pdf files are allowed!');
     }
 }
@@ -44,8 +50,6 @@ function checkFileType(file, cb){
 router.post('/', (req, res) => {
     upload(req, res, async (err) => {
         if(err){
-            // Multer Error
-            console.error("Multer Error:", err);
             return res.status(400).json({ message: err });
         } 
         
@@ -54,12 +58,10 @@ router.post('/', (req, res) => {
         }
 
         try {
-            console.log("File uploaded:", req.file.path); // Log the path
             const filePath = req.file.path;
             const fileExt = path.extname(req.file.originalname).toLowerCase();
             let fileContent = "";
 
-            // --- READ FILE CONTENT ---
             if (fileExt === '.pdf') {
                 const dataBuffer = fs.readFileSync(filePath);
                 const pdfData = await pdfParse(dataBuffer);
@@ -68,8 +70,7 @@ router.post('/', (req, res) => {
                 fileContent = fs.readFileSync(filePath, 'utf8');
             }
 
-            // --- VERIFICATION LOGIC ---
-            // Random score for demonstration
+            // Mock Verification Score
             const plagiarismScore = Math.floor(Math.random() * 50); 
 
             res.json({
@@ -79,8 +80,7 @@ router.post('/', (req, res) => {
             });
 
         } catch (error) {
-            console.error("Processing Error:", error);
-            // --- FIX 2: Send the REAL error message to the user ---
+            console.error(error);
             res.status(500).json({ message: 'Error: ' + error.message });
         }
     });
