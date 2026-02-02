@@ -382,3 +382,11 @@ body {
     color: #fff;
     font-weight: 300;
 }
+/* --- FIX: Force Login & Signup to Center --- */
+body.login-layout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}

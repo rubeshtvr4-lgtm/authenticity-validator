@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Verification</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header"><i class="fas fa-shield-alt"></i> Dashboard</div>
+        <ul class="sidebar-links">
+            <li><a href="home.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="upload.html"><i class="fas fa-file-upload"></i> Upload Certificate</a></li>
+            <li><a href="verify.html"><i class="fas fa-search"></i> Verify Certificate</a></li>
+            <li><a href="plagiarism.html"><i class="fas fa-copy"></i> Plagiarism Checker</a></li>
+            <li><a href="qr.html" class="active"><i class="fas fa-qrcode"></i> QR Verification</a></li>
+        </ul>
+        <div class="logout-section">
+            <button onclick="logout()" class="btn-logout-side"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="content-container">
+            <h2>📱 QR Code Generator</h2>
+            <p>Enter a Document ID to generate a Secure QR Code.</p>
+            
+            <div class="dashboard-box">
+                <input type="text" id="qrInput" placeholder="Enter Document ID">
+                <br><br>
+                <button class="btn" onclick="generateQR()">Generate QR</button>
+                
+                <div id="qrResult" style="margin-top: 20px;">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        async function generateQR() {
+            const docId = document.getElementById('qrInput').value;
+            if(!docId) return alert("Enter ID!");
+
+            const res = await fetch('/api/features/generate-qr', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ docId })
+            });
+            const data = await res.json();
+            
+            if(data.qrImage) {
+                document.getElementById('qrResult').innerHTML = `<img src="${data.qrImage}" style="border-radius: 10px; border: 5px solid white;">`;
+            }
+        }
+    </script>
+</body>
+</html>

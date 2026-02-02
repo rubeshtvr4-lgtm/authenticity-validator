@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
+const featureRoutes = require('./routes/featureRoutes');
 
 const app = express();
 
@@ -26,7 +27,7 @@ const verifyRoutes = require('./routes/verifyroutes');
 app.use('/api/auth', authRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/verify', verifyRoutes); 
-
+app.use('/api/features', featureRoutes);
 // --- FIX: Send 'index.html' when opening the site ---
 // --- FIX: Send 'index.html' when opening the site ---
 // We use /(.*)/ instead of '*' to fix the new Express update error
