@@ -207,3 +207,129 @@ input {
     line-height: 1.6;
     color: #e0e0e0;
 }
+/* --- LAYOUT RESET --- */
+body {
+    display: flex; /* Override previous center alignment */
+    align-items: flex-start; /* Align to top */
+    overflow: hidden; /* Prevent scrolling if not needed */
+}
+
+/* --- LEFT SIDEBAR STYLE --- */
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(15px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    position: fixed; /* Stays in place */
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+}
+
+.sidebar-header {
+    font-size: 24px;
+    font-weight: bold;
+    color: #00e5ff;
+    margin-bottom: 40px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.sidebar-links {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar-links li {
+    margin-bottom: 15px;
+}
+
+/* --- SIDEBAR LINK ANIMATION --- */
+.sidebar-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    border-radius: 10px;
+    transition: all 0.3s ease; /* Smooth animation */
+    border: 1px solid transparent;
+}
+
+.sidebar-links a i {
+    margin-right: 15px;
+    width: 20px;
+    text-align: center;
+}
+
+/* Hover Effect: Slide and Glow */
+.sidebar-links a:hover, .sidebar-links a.active {
+    background: rgba(255, 255, 255, 0.15);
+    color: #00e5ff;
+    transform: translateX(10px); /* Slide to right */
+    border-color: rgba(0, 229, 255, 0.3);
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+}
+
+/* --- MAIN CONTENT AREA --- */
+.main-content {
+    margin-left: 260px; /* Push content to right of sidebar */
+    width: calc(100% - 260px);
+    height: 100vh;
+    overflow-y: auto; /* Allow scrolling */
+}
+
+/* --- TOP HEADER --- */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.project-title {
+    flex-grow: 1; /* Pushes title to fill space */
+    text-align: center; /* Centers the text */
+    font-size: 28px;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+}
+
+/* --- LOGOUT BUTTON --- */
+.btn-logout {
+    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(255, 75, 43, 0.4);
+}
+
+.btn-logout:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(255, 75, 43, 0.6);
+}
+
+/* --- WELCOME MESSAGE --- */
+.content-container {
+    padding: 40px;
+    text-align: center;
+}
+
+#welcomeMessage {
+    font-size: 36px;
+    margin-bottom: 30px;
+    color: #fff;
+    font-weight: 300;
+}

@@ -20,10 +20,11 @@ if (loginForm) {
 
             const data = await res.json();
 
-            if (res.ok) {
-                // Success! Save the key and go to home page
+           if (res.ok) {
+                // Success! Save token AND username
                 localStorage.setItem('token', data.token);
-                window.location.href = 'home.html'; // <--- CHANGED THIS
+                localStorage.setItem('username', data.user.username); // <--- NEW LINE
+                window.location.href = 'home.html'; 
             } else {
                 alert(data.message || "Login failed");
                 btn.innerText = "Login";

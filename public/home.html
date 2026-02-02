@@ -9,45 +9,53 @@
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="logo">Authenticity Validator</div>
-        <div class="menu-icon" onclick="toggleMenu()">
-            <i class="fas fa-bars"></i>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-shield-alt"></i> Menu
         </div>
-    </nav>
-
-    <div class="dropdown-menu" id="dropdownMenu">
-        <a href="upload.html">📂 Upload Operation</a>
-        <a href="verify.html">🔍 Verify Authenticity</a>
-        <a href="#" onclick="logout()" class="logout-link">🚪 Logout</a>
+        <ul class="sidebar-links">
+            <li><a href="home.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="upload.html"><i class="fas fa-file-upload"></i> Upload Operation</a></li>
+            <li><a href="verify.html"><i class="fas fa-search"></i> Verify Authenticity</a></li>
+            </ul>
     </div>
 
-    <div class="container">
-        <div class="info-box">
-            <h2>About the Project</h2>
-            <p>
-                Authenticity validation in academia is the critical process of verifying the originality of research 
-                and the legitimacy of educational credentials to ensure integrity, credibility, and trust. 
-                It involves using technologies like AI-driven plagiarism detection, OCR, and blockchain to prevent fraud, 
-                detect AI-generated content, and confirm that academic records are genuine.
-            </p>
+    <div class="main-content">
+        
+        <header class="top-bar">
+            <h1 class="project-title">Authenticity Validator</h1>
+            
+            <button onclick="logout()" class="btn-logout">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </header>
+
+        <div class="content-container">
+            <h2 id="welcomeMessage">Welcome!</h2>
+            
+            <div class="info-box">
+                <h3>About the Project</h3>
+                <p>
+                    Authenticity validation in academia is the critical process of verifying the originality of research 
+                    and the legitimacy of educational credentials to ensure integrity, credibility, and trust. 
+                    It involves using technologies like AI-driven plagiarism detection, OCR, and blockchain to prevent fraud.
+                </p>
+            </div>
         </div>
     </div>
 
     <script>
-        // Function to show/hide the menu
-        function toggleMenu() {
-            const menu = document.getElementById('dropdownMenu');
-            menu.classList.toggle('show');
+        // Display Username
+        const username = localStorage.getItem('username');
+        if (username) {
+            document.getElementById('welcomeMessage').innerText = `Welcome, ${username}! 👋`;
         }
 
-        // Logout Function
         function logout() {
-            localStorage.removeItem('token');
+            localStorage.clear(); // Clear token and username
             window.location.href = 'index.html';
         }
 
-        // Security: Redirect to login if not logged in
         if (!localStorage.getItem('token')) {
             window.location.href = 'index.html';
         }
