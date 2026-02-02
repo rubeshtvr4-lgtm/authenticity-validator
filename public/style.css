@@ -90,9 +90,15 @@ input {
 }
 
 .switch-text a {
-    color: #ffd700;
+    color: #00e5ff; /* ✨ New Bright Cyan Color */
     text-decoration: none;
     font-weight: bold;
+    transition: 0.3s;
+}
+
+.switch-text a:hover {
+    color: #ffffff; /* Turns white when you hover over it */
+    text-shadow: 0 0 10px #00e5ff; /* Adds a glowing effect */
 }
 
 /* --- Navbar (for Dashboard) --- */

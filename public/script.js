@@ -1,122 +1,69 @@
-<<<<<<< HEAD
-const form = document.getElementById('authForm');
-const usernameInput = document.getElementById('username');
-const title = document.getElementById('formTitle');
-const submitBtn = document.getElementById('submitBtn');
-const toggleBtn = document.getElementById('toggleBtn');
-const message = document.getElementById('message');
+// --- LOGIN LOGIC ---
+const loginForm = document.getElementById('loginForm');
+if (loginForm) {
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Stop the page from reloading
+        
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const btn = loginForm.querySelector('button');
 
-let isLogin = true;
+        try {
+            btn.innerText = "Checking..."; // distinct feedback
+            
+            // Send data to server
+            const res = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
 
-// Toggle between Login and Signup modes
-toggleBtn.addEventListener('click', () => {
-    isLogin = !isLogin;
-    title.innerText = isLogin ? 'Login' : 'Sign Up';
-    submitBtn.innerText = isLogin ? 'Login' : 'Sign Up';
-    toggleBtn.innerText = isLogin ? "Don't have an account? Sign Up" : "Already have an account? Login";
-    usernameInput.style.display = isLogin ? 'none' : 'block';
-    if (!isLogin) usernameInput.setAttribute('required', 'true');
-    else usernameInput.removeAttribute('required');
-    message.innerText = '';
-});
+            const data = await res.json();
 
-// Handle Form Submission
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const username = usernameInput.value;
-
-    const endpoint = isLogin ? '/api/auth/login' : '/api/auth/signup';
-    const body = isLogin ? { email, password } : { username, email, password };
-
-    try {
-        const res = await fetch(endpoint, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
-        });
-
-        const data = await res.json();
-
-        if (res.ok) {
-            message.className = 'success';
-            message.innerText = data.message;
-            if (isLogin) {
-                // Save token and redirect
+            if (res.ok) {
+                // Success! Save the key and go to dashboard
                 localStorage.setItem('token', data.token);
-                setTimeout(() => window.location.href = '/dashboard.html', 1000);
+                window.location.href = 'dashboard.html'; 
             } else {
-                // If signup successful, switch to login view
-                setTimeout(() => toggleBtn.click(), 1500);
+                alert(data.message || "Login failed");
+                btn.innerText = "Login";
             }
-        } else {
-            message.className = 'error';
-            message.innerText = data.message || data.error;
+        } catch (err) {
+            console.error(err);
+            alert("Server error. Please try again.");
+            btn.innerText = "Login";
         }
-    } catch (err) {
-        message.className = 'error';
-        message.innerText = 'Server error. Please try again.';
-    }
-=======
-const form = document.getElementById('authForm');
-const usernameInput = document.getElementById('username');
-const title = document.getElementById('formTitle');
-const submitBtn = document.getElementById('submitBtn');
-const toggleBtn = document.getElementById('toggleBtn');
-const message = document.getElementById('message');
+    });
+}
 
-let isLogin = true;
+// --- SIGNUP LOGIC ---
+const signupForm = document.getElementById('signupForm');
+if (signupForm) {
+    signupForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const username = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
 
-// Toggle between Login and Signup modes
-toggleBtn.addEventListener('click', () => {
-    isLogin = !isLogin;
-    title.innerText = isLogin ? 'Login' : 'Sign Up';
-    submitBtn.innerText = isLogin ? 'Login' : 'Sign Up';
-    toggleBtn.innerText = isLogin ? "Don't have an account? Sign Up" : "Already have an account? Login";
-    usernameInput.style.display = isLogin ? 'none' : 'block';
-    if (!isLogin) usernameInput.setAttribute('required', 'true');
-    else usernameInput.removeAttribute('required');
-    message.innerText = '';
-});
+        try {
+            const res = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, email, password })
+            });
 
-// Handle Form Submission
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const username = usernameInput.value;
+            const data = await res.json();
 
-    const endpoint = isLogin ? '/api/auth/login' : '/api/auth/signup';
-    const body = isLogin ? { email, password } : { username, email, password };
-
-    try {
-        const res = await fetch(endpoint, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
-        });
-
-        const data = await res.json();
-
-        if (res.ok) {
-            message.className = 'success';
-            message.innerText = data.message;
-            if (isLogin) {
-                // Save token and redirect
-                localStorage.setItem('token', data.token);
-                setTimeout(() => window.location.href = '/dashboard.html', 1000);
+            if (res.ok) {
+                alert("Account created! Please log in.");
+                window.location.href = 'index.html';
             } else {
-                // If signup successful, switch to login view
-                setTimeout(() => toggleBtn.click(), 1500);
+                alert(data.message);
             }
-        } else {
-            message.className = 'error';
-            message.innerText = data.message || data.error;
+        } catch (err) {
+            console.error(err);
+            alert("Error signing up");
         }
-    } catch (err) {
-        message.className = 'error';
-        message.innerText = 'Server error. Please try again.';
-    }
->>>>>>> 04e92bd834593c8fa4360410d354b0903e4d7c24
-});
+    });
+}
