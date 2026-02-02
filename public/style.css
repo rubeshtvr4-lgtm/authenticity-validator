@@ -133,3 +133,77 @@ input {
     gap: 15px;
     margin-top: 20px;
 }
+/* --- Navbar Updates --- */
+.navbar {
+    z-index: 1000; /* Keep navbar on top */
+}
+
+.menu-icon {
+    font-size: 24px;
+    cursor: pointer;
+    color: white;
+}
+
+/* --- Dropdown Menu (Hidden by Default) --- */
+.dropdown-menu {
+    display: none; /* Hidden initially */
+    position: absolute;
+    top: 60px; /* Below navbar */
+    right: 20px;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 15px;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 999;
+}
+
+/* Show menu when active */
+.dropdown-menu.show {
+    display: flex;
+}
+
+.dropdown-menu a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: 0.3s;
+    font-size: 16px;
+}
+
+.dropdown-menu a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #00e5ff; /* Cyan hover */
+}
+
+.logout-link {
+    color: #ff4b2b !important; /* Red for logout */
+}
+
+/* --- Info Box (Home Page Text) --- */
+.info-box {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 50px;
+    border-radius: 20px;
+    max-width: 800px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    margin-top: 80px; /* Space from top */
+}
+
+.info-box h2 {
+    color: #00e5ff; /* Cyan Title */
+    margin-bottom: 20px;
+    font-size: 28px;
+}
+
+.info-box p {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #e0e0e0;
+}

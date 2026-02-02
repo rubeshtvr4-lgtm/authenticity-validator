@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Authenticity Validator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Authenticity Validator</div>
+        <div class="menu-icon" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+
+    <div class="dropdown-menu" id="dropdownMenu">
+        <a href="upload.html">📂 Upload Operation</a>
+        <a href="verify.html">🔍 Verify Authenticity</a>
+        <a href="#" onclick="logout()" class="logout-link">🚪 Logout</a>
+    </div>
+
+    <div class="container">
+        <div class="info-box">
+            <h2>About the Project</h2>
+            <p>
+                Authenticity validation in academia is the critical process of verifying the originality of research 
+                and the legitimacy of educational credentials to ensure integrity, credibility, and trust. 
+                It involves using technologies like AI-driven plagiarism detection, OCR, and blockchain to prevent fraud, 
+                detect AI-generated content, and confirm that academic records are genuine.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Function to show/hide the menu
+        function toggleMenu() {
+            const menu = document.getElementById('dropdownMenu');
+            menu.classList.toggle('show');
+        }
+
+        // Logout Function
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'index.html';
+        }
+
+        // Security: Redirect to login if not logged in
+        if (!localStorage.getItem('token')) {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

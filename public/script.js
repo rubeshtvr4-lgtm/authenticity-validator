@@ -21,9 +21,9 @@ if (loginForm) {
             const data = await res.json();
 
             if (res.ok) {
-                // Success! Save the key and go to dashboard
+                // Success! Save the key and go to home page
                 localStorage.setItem('token', data.token);
-                window.location.href = 'dashboard.html'; 
+                window.location.href = 'home.html'; // <--- CHANGED THIS
             } else {
                 alert(data.message || "Login failed");
                 btn.innerText = "Login";
