@@ -1,4 +1,3 @@
-// Restarting server...
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
@@ -10,8 +9,9 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors());
-app.use(express.static('public')); // Serve static files (CSS, Images)
-app.use(express.static('views'));  // Serve HTML files
+
+// --- FIX: Serve files from the 'public' folder ---
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
@@ -19,17 +19,17 @@ mongoose.connect(process.env.MONGO_URI)
 .catch(err => console.error("❌ Connection Error:", err));
 
 // Routes
-const authRoutes = require('./routes/authroutes'); // Ensure filename matches exactly
+const authRoutes = require('./routes/authroutes');
 const uploadRoutes = require('./routes/uploadroutes');
-const verifyRoutes = require('./routes/verifyroutes'); // If you have this file
+const verifyRoutes = require('./routes/verifyroutes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/verify', verifyRoutes); 
 
-// Serve Frontend
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'index.html'));
+// --- FIX: Send 'index.html' when opening the site ---
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Start Server
