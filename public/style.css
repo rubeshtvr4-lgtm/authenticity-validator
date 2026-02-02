@@ -1,0 +1,71 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    /* Set the new background image */
+    background: url('/background.jpg') no-repeat center center fixed;
+    background-size: cover; /* Ensure it covers the whole screen */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    color: white; /* Change default text color to white */
+}
+
+.container {
+    /* Make the box white but semi-transparent */
+    background: rgba(255, 255, 255, 0.85);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    width: 350px;
+    text-align: center;
+    color: #333; /* Keep text inside the box dark for readability */
+}
+
+h2 {
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background: #6a1b9a; /* A purple color to match the theme */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #4a148c; /* Darker purple on hover */
+}
+
+.toggle {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: #666;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#message {
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.error { color: #d9534f; }
+.success { color: #28a745; }

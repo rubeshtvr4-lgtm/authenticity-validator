@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Verification</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Verification Status</h2>
+        <div id="loader">Checking database...</div>
+        <div id="result" style="display:none;">
+            <h3 id="statusText"></h3>
+            <p id="docName" style="color:#666;"></p>
+            <p id="timestamp" style="font-size:0.8rem;"></p>
+        </div>
+        <a href="/dashboard.html?section=upload" style="display:inline-block; margin-top:20px; text-decoration:none; background:#4facfe; color:white; padding:10px 20px; border-radius:5px;">
+    Upload New File
+</a>
+    </div>
+
+    <script>
+        // 1. Get the document name from the URL (?doc=filename)
+        const params = new URLSearchParams(window.location.search);
+        const docName = params.get('doc');
+
+        if (!docName) {
+            document.getElementById('loader').innerText = "No document specified.";
+        } else {
+            // 2. Ask the server if it's valid
+            fetch(`/api/verify/validate?doc=${docName}`)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('result').style.display = 'block';
+                    
+                    const status = document.getElementById('statusText');
+                    status.innerText = data.message;
+                    status.className = data.valid ? 'success' : 'error';
+                    
+                    document.getElementById('docName').innerText = "File: " + docName;
+                    if(data.timestamp) {
+                        document.getElementById('timestamp').innerText = "Verified on: " + data.timestamp;
+                    }
+                })
+                .catch(err => {
+                    document.getElementById('loader').innerText = "Verification Failed.";
+                });
+        }
+    </script>
+</body>
+</html>
