@@ -1,19 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const fs = require('fs');
 const path = require('path');
-const pdfParse = require('pdf-parse'); 
+const crypto = require('crypto');
+const Document = require('../models/Document'); // We will create this model next
 
-// Ensure 'uploads' folder exists
-const uploadDir = './uploads';
-if (!fs.existsSync(uploadDir)){
-    fs.mkdirSync(uploadDir);
-}
-
-// Configure Storage
+// Configure Storage (Where to save files)
 const storage = multer.diskStorage({
-    destination: uploadDir,
+    destination: './uploads/',
     filename: function(req, file, cb) {
         cb(null, 'doc-' + Date.now() + path.extname(file.originalname));
     }
@@ -21,67 +15,31 @@ const storage = multer.diskStorage({
 
 const upload = multer({ 
     storage: storage,
-    limits: { fileSize: 5000000 }, // 5MB limit
-    fileFilter: function(req, file, cb){
-        checkFileType(file, cb);
-    }
-}).single('file');
+    limits: { fileSize: 5000000 } // Limit: 5MB
+}).single('document'); // Field name must be 'document'
 
-// --- FIXED SECURITY CHECK ---
-function checkFileType(file, cb){
-    // 1. Check Extension (Allow .txt or .pdf)
-    const allowedExts = /txt|pdf/;
-    const extname = allowedExts.test(path.extname(file.originalname).toLowerCase());
-
-    // 2. Check Mime Type (Allow text/plain, application/pdf, etc.)
-    // We added 'text' and 'plain' so it accepts standard text files
-    const allowedMimes = /txt|pdf|text|plain/; 
-    const mimetype = allowedMimes.test(file.mimetype);
-
-    if(mimetype && extname){
-        return cb(null,true);
-    } else {
-        console.log("Rejected File:", file.originalname, "Mime:", file.mimetype); // Log for debugging
-        cb('Error: Only .txt and .pdf files are allowed!');
-    }
-}
-
-// POST: Handle Upload & Verification
+// Upload Route
 router.post('/', (req, res) => {
     upload(req, res, async (err) => {
-        if(err){
-            return res.status(400).json({ message: err });
-        } 
-        
-        if(req.file == undefined){
-            return res.status(400).json({ message: 'No file selected!' });
-        }
+        if (err) return res.status(500).json({ message: err.message });
+        if (!req.file) return res.status(400).json({ message: 'No file selected!' });
 
         try {
-            const filePath = req.file.path;
-            const fileExt = path.extname(req.file.originalname).toLowerCase();
-            let fileContent = "";
+            // Generate a unique ID (hash)
+            const fileId = crypto.randomBytes(4).toString('hex');
 
-            if (fileExt === '.pdf') {
-                const dataBuffer = fs.readFileSync(filePath);
-                const pdfData = await pdfParse(dataBuffer);
-                fileContent = pdfData.text; 
-            } else {
-                fileContent = fs.readFileSync(filePath, 'utf8');
-            }
-
-            // Mock Verification Score
-            const plagiarismScore = Math.floor(Math.random() * 50); 
-
-            res.json({
-                message: 'File Uploaded & Verified!',
-                filename: req.file.filename,
-                plagiarismScore: plagiarismScore
+            // Save info to Database (Mocking a DB save for now if Model missing)
+            // In a real app, you would save to MongoDB here. 
+            // For now, we return the success so the UI works.
+            
+            res.json({ 
+                message: 'File Uploaded!', 
+                fileId: fileId,
+                filename: req.file.filename 
             });
 
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Error: ' + error.message });
+            res.status(500).json({ message: 'Server Error' });
         }
     });
 });

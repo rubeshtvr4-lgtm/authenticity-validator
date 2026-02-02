@@ -280,10 +280,59 @@ body {
 
 /* --- MAIN CONTENT AREA --- */
 .main-content {
-    margin-left: 260px; /* Push content to right of sidebar */
+    margin-left: 260px; /* Space for sidebar */
     width: calc(100% - 260px);
     height: 100vh;
-    overflow-y: auto; /* Allow scrolling */
+    display: flex;             /* FLEXBOX TO CENTER */
+    justify-content: center;   /* Center Horizontally */
+    align-items: center;       /* Center Vertically */
+    flex-direction: column;    /* Stack items (Welcome on top of Box) */
+}
+
+.center-wrapper {
+    text-align: center;
+    width: 80%;
+    max-width: 800px;
+}
+
+#welcomeMessage {
+    font-size: 48px;
+    margin-bottom: 30px;
+    color: white;
+    font-weight: 300;
+    text-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
+}
+
+.info-box {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 50px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    color: #e0e0e0;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+/* Sidebar Logout Button Style */
+.logout-section {
+    margin-top: auto; /* Pushes to bottom */
+    padding-top: 20px;
+}
+.btn-logout-side {
+    width: 100%;
+    padding: 12px;
+    background: #ff4b2b;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+.btn-logout-side:hover {
+    background: #ff416c;
 }
 
 /* --- TOP HEADER --- */
