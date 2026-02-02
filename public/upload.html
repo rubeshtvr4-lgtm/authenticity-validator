@@ -9,24 +9,39 @@
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="logo">Authenticity Validator</div>
-        <a href="home.html" class="btn-logout" style="background: transparent; border: 1px solid white;">Back to Home</a>
-    </nav>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-shield-alt"></i> Dashboard
+        </div>
+        <ul class="sidebar-links">
+            <li><a href="home.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="upload.html" class="active"><i class="fas fa-file-upload"></i> Upload Certificate</a></li>
+            <li><a href="verify.html"><i class="fas fa-search"></i> Verify Certificate</a></li>
+            <li><a href="plagiarism.html"><i class="fas fa-copy"></i> Plagiarism Checker</a></li>
+            <li><a href="qr.html"><i class="fas fa-qrcode"></i> QR Verification</a></li>
+        </ul>
+        <div class="logout-section">
+            <button onclick="logout()" class="btn-logout-side">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </div>
 
-    <div class="container">
-        <div class="dashboard-box">
-            <h2>📂 Upload Document</h2>
-            <p>Select a file (PDF or DOCX) to check for authenticity.</p>
+    <div class="main-content">
+        <div class="center-wrapper">
+            <h2 style="color: white; margin-bottom: 20px;">📂 Upload Document</h2>
+            <p style="color: #ccc; margin-bottom: 20px;">Select a file (PDF or DOCX) to check for authenticity.</p>
             
-            <form id="uploadForm" style="margin-top: 20px;">
-                <div class="input-group">
-                    <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.txt" required style="color: black;">
-                </div>
-                <button type="submit" class="btn">🚀 Upload & Scan</button>
-            </form>
+            <div class="dashboard-box">
+                <form id="uploadForm">
+                    <div class="input-group">
+                        <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.txt" required>
+                    </div>
+                    <button type="submit" class="btn">🚀 Upload & Scan</button>
+                </form>
 
-            <div id="uploadResult" style="margin-top: 20px; font-weight: bold;"></div>
+                <div id="uploadResult" style="margin-top: 20px; font-weight: bold; min-height: 20px;"></div>
+            </div>
         </div>
     </div>
 
@@ -36,6 +51,7 @@
         if (!localStorage.getItem('token')) {
             window.location.href = 'index.html';
         }
+        function logout() { localStorage.clear(); window.location.href = 'index.html'; }
     </script>
 </body>
 </html>

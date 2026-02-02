@@ -9,32 +9,54 @@
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="logo">Authenticity Validator</div>
-        <a href="home.html" class="btn-logout" style="background: transparent; border: 1px solid white;">Back to Home</a>
-    </nav>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-shield-alt"></i> Dashboard
+        </div>
+        <ul class="sidebar-links">
+            <li><a href="home.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="upload.html"><i class="fas fa-file-upload"></i> Upload Certificate</a></li>
+            <li><a href="verify.html" class="active"><i class="fas fa-search"></i> Verify Certificate</a></li>
+            <li><a href="plagiarism.html"><i class="fas fa-copy"></i> Plagiarism Checker</a></li>
+            <li><a href="qr.html"><i class="fas fa-qrcode"></i> QR Verification</a></li>
+        </ul>
+        <div class="logout-section">
+            <button onclick="logout()" class="btn-logout-side">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </div>
 
-    <div class="container">
-        <div class="dashboard-box">
-            <h2>🔍 Verify Authenticity</h2>
-            <p>Enter the unique Document ID to verify its validity.</p>
+    <div class="main-content">
+        <div class="center-wrapper">
+            <h2 style="color: white; margin-bottom: 20px;">🔍 Verify Authenticity</h2>
+            <p style="color: #ccc; margin-bottom: 20px;">Enter the unique Document ID to verify its validity.</p>
             
-            <form id="verifyForm" style="margin-top: 20px;">
-                <div class="input-group">
-                    <input type="text" id="docIdInput" placeholder="Enter Document ID (e.g. 65c1...)" required style="color: black;">
-                </div>
-                <button type="submit" class="btn">Check Now</button>
-            </form>
+            <div class="dashboard-box">
+                <form id="verifyForm">
+                    <div class="input-group">
+                        <input type="text" id="docIdInput" placeholder="Enter Document ID (e.g. 65c1...)" required>
+                    </div>
+                    <button type="submit" class="btn">Check Now</button>
+                </form>
 
-            <div id="verifyResult" style="margin-top: 20px; display: none; text-align: left; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px;">
-                <h3 style="color: #00e5ff; margin-bottom: 10px;">Verification Result:</h3>
-                <p><strong>Status:</strong> <span id="statusText"></span></p>
-                <p><strong>File Name:</strong> <span id="fileName"></span></p>
-                <p><strong>Uploaded On:</strong> <span id="uploadDate"></span></p>
+                <div id="verifyResult" style="margin-top: 20px; display: none; text-align: left; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; color: white;">
+                    <h3 style="color: #00e5ff; margin-bottom: 10px;">Verification Result:</h3>
+                    <p><strong>Status:</strong> <span id="statusText"></span></p>
+                    <p><strong>File Name:</strong> <span id="fileName"></span></p>
+                    <p><strong>Uploaded On:</strong> <span id="uploadDate"></span></p>
+                </div>
             </div>
         </div>
     </div>
 
     <script src="script.js"></script>
+    <script>
+        // Protect the page
+        if (!localStorage.getItem('token')) {
+            window.location.href = 'index.html';
+        }
+        function logout() { localStorage.clear(); window.location.href = 'index.html'; }
+    </script>
 </body>
 </html>
