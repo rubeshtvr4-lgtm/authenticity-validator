@@ -16,6 +16,7 @@ body {
 }
 
 /* --- 2. LOGIN & SIGNUP (Keep Middle Center) --- */
+/* This specific class is used ONLY on index.html and signup.html */
 body.login-layout {
     display: flex !important;
     justify-content: center !important;
@@ -24,13 +25,13 @@ body.login-layout {
     overflow: hidden !important;
 }
 
-/* --- 3. CLASSIC NAVBAR (Restored) --- */
+/* --- 3. CLASSIC TOP NAVBAR (Restored) --- */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 40px;
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    padding: 15px 40px;
+    background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     position: sticky;
@@ -39,9 +40,9 @@ body.login-layout {
 }
 
 .logo {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
-    color: #00e5ff; /* Cyan brand color */
+    color: #00e5ff;
     text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
 }
 
@@ -54,10 +55,10 @@ body.login-layout {
 .nav-links a {
     color: white;
     text-decoration: none;
-    font-size: 16px;
-    transition: 0.3s;
-    padding: 8px 15px;
+    font-size: 15px;
+    padding: 8px 12px;
     border-radius: 5px;
+    transition: 0.3s;
 }
 
 .nav-links a:hover, .nav-links a.active {
@@ -75,13 +76,14 @@ body.login-layout {
     font-weight: bold;
 }
 
-/* --- 4. CONTAINER & BOXES --- */
+/* --- 4. DASHBOARD CONTAINER --- */
+/* This handles the layout for Home, Upload, Verify */
 .container {
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding-top: 50px; /* Space from navbar */
-    min-height: 80vh;
+    align-items: center; /* Center vertically */
+    padding-top: 40px;
+    min-height: 80vh; /* Takes up most of the screen */
 }
 
 .dashboard-box, .login-box, .info-box {
@@ -89,16 +91,16 @@ body.login-layout {
     backdrop-filter: blur(15px);
     padding: 40px;
     border-radius: 15px;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     border: 1px solid rgba(255, 255, 255, 0.18);
     text-align: center;
     width: 100%;
-    max-width: 500px; /* Restrict width for neat look */
+    max-width: 500px;
     color: white;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
 .info-box {
-    max-width: 800px; /* Wider for Home page text */
+    max-width: 800px; /* Home page box is wider */
 }
 
 /* --- 5. INPUTS & BUTTONS --- */
@@ -108,37 +110,23 @@ input, textarea {
     margin-bottom: 15px;
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 5px;
-    background: #ffffff !important; 
+    background: #ffffff !important;
     color: #000000 !important;
     outline: none;
-    position: relative;
-    z-index: 10;
-}
-
-input:focus {
-    border: 2px solid #00e5ff !important;
-    box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
 }
 
 .btn {
     width: 100%;
     padding: 12px;
+    background: linear-gradient(to right, #6a11cb, #2575fc);
     border: none;
     border-radius: 5px;
-    background: linear-gradient(to right, #6a11cb, #2575fc);
     color: white;
     font-size: 16px;
     cursor: pointer;
     font-weight: bold;
-    transition: 0.3s;
 }
+.btn:hover { transform: scale(1.02); }
 
-.btn:hover {
-    transform: scale(1.02);
-}
-
-/* --- 6. TEXT STYLES --- */
-h2 { margin-bottom: 20px; color: #fff; }
+h2 { margin-bottom: 15px; color: #fff; }
 p { color: #ddd; margin-bottom: 20px; }
-.switch-text { margin-top: 15px; font-size: 14px; }
-.switch-text a { color: #00e5ff; text-decoration: none; }
