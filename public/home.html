@@ -5,59 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Authenticity Validator</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <i class="fas fa-shield-alt"></i> Dashboard
-        </div>
-        <ul class="sidebar-links">
-            <li><a href="home.html" class="active"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="upload.html"><i class="fas fa-file-upload"></i> Upload Certificate</a></li>
-            <li><a href="verify.html"><i class="fas fa-search"></i> Verify Certificate</a></li>
-            <li><a href="plagiarism.html"><i class="fas fa-copy"></i> Plagiarism Checker</a></li>
-            <li><a href="qr.html"><i class="fas fa-qrcode"></i> QR Verification</a></li>
+    <nav class="navbar">
+        <div class="logo">Authenticity Validator</div>
+        <ul class="nav-links">
+            <li><a href="home.html" class="active">Home</a></li>
+            <li><a href="upload.html">Upload</a></li>
+            <li><a href="verify.html">Verify</a></li>
+            <li><a href="plagiarism.html">Plagiarism</a></li>
+            <li><a href="qr.html">QR Code</a></li>
+            <li><button onclick="logout()" class="btn-logout-nav">Logout</button></li>
         </ul>
-        
-        <div class="logout-section">
-            <button onclick="logout()" class="btn-logout-side">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
-        </div>
-    </div>
+    </nav>
 
-    <div class="main-content">
-        <div class="center-wrapper">
+    <div class="container">
+        <div class="info-box">
             <h1 id="welcomeMessage">Welcome!</h1>
-            
-            <div class="info-box">
-                <h2 style="color: #00e5ff; margin-bottom: 15px;">About the Project</h2>
-                <p>
-                    Authenticity validation in academia is the critical process of verifying the originality of research 
-                    and the legitimacy of educational credentials to ensure integrity, credibility, and trust. 
-                    It involves using technologies like AI-driven plagiarism detection, OCR, and blockchain.
-                </p>
-            </div>
+            <br>
+            <h2 style="color: #00e5ff;">About the Project</h2>
+            <p>
+                Authenticity validation in academia is the critical process of verifying the originality of research 
+                and the legitimacy of educational credentials to ensure integrity, credibility, and trust. 
+                Use the tabs above to Upload documents, Verify certificates, or Check for plagiarism.
+            </p>
         </div>
     </div>
 
+    <script src="script.js"></script>
     <script>
-        // Display Username
         const username = localStorage.getItem('username');
-        if (username) {
-            document.getElementById('welcomeMessage').innerText = `Welcome, ${username}! 👋`;
-        }
-
-        function logout() {
-            localStorage.clear();
-            window.location.href = 'index.html';
-        }
-
-        if (!localStorage.getItem('token')) {
-            window.location.href = 'index.html';
-        }
+        if (username) document.getElementById('welcomeMessage').innerText = `Welcome, ${username}! 👋`;
+        function logout() { localStorage.clear(); window.location.href = 'index.html'; }
+        if (!localStorage.getItem('token')) window.location.href = 'index.html';
     </script>
 </body>
 </html>
