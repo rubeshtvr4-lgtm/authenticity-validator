@@ -31,9 +31,9 @@ body.login-layout {
     justify-content: space-between;
     align-items: center;
     padding: 15px 40px;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(9, 187, 241, 0.6);
     backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(11, 210, 246, 0.1);
     position: sticky;
     top: 0;
     z-index: 1000;
